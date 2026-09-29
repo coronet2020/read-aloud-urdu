@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Read Aloud Urdu</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    line-height: 2;
+    font-size: 22px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#reader {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    min-height: 250px;
+}
+
+.word {
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.word.active {
+    background: yellow;
+}
+
+#meaning {
+    position: sticky;
+    bottom: 10px;
+    background: white;
+    border: 2px solid #333;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 20px;
+    display: none;
+}
+
+button {
+    font-size: 18px;
+    padding: 12px 20px;
+    margin: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📖 Read Aloud</h1>
+
+<button onclick="startReading()">▶ Read</button>
+<button onclick="stopReading()">⏹ Stop</button>
+
+<div id="reader">
+The Happy Prince looked over the city. He could see the poor people
+and the little children playing in the streets.
+</div>
+
+<div id="meaning"></div>
+
+<script>
+
+const dictionary = {
+    happy: "خوش",
+    prince: "شہزادہ",
+    looked: "دیکھا",
+    city: "شہر",
+    poor: "غریب",
+    people: "لوگ",
+    little: "چھوٹا",
+    children: "بچے",
+    playing: "کھیل رہے",
+    streets: "گلیاں"
+};
+
+const reader = document.getElementById("reader");
+
+const words = reader.innerText.trim().split(/\s+/);
+
+reader.innerHTML = words.map((word, i) =>
+    `<span class="word" data-index="${i}">${word}</span>`
+).join(" ");
+
+document.querySelectorAll(".word").forEach(element => {
+
+    element.addEventListener("click", function () {
+
+        const cleanWord =
+            this.innerText.toLowerCase().replace(/[^a-z']/g, "");
+
+        const meaning =
+            dictionary[cleanWord] || "Urdu meaning not added yet";
+
+        const box = document.getElementById("meaning");
+
+        box.innerHTML =
+            `<strong>${this.innerText}</strong><br>${meaning}`;
+
+        box.style.display = "block";
+    });
+
+});
+
+function startReading() {
+
+    speechSynthesis.cancel();
+
+    const utterance =
+        new SpeechSynthesisUtterance(reader.innerText);
+
+    utterance.lang = "en-GB";
+    utterance.rate = 0.75;
+
+    speechSynthesis.speak(utterance);
+}
+
+function stopReading() {
+    speechSynthesis.cancel();
+}
+
+</script>
+
+</body>
+</html>
