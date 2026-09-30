@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+l<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -124,6 +124,7 @@ function startReading() {
     utterance.rate = 0.75;
     utterance.pitch = 0.9;
 const voices = speechSynthesis.getVoices();
+alert(voices.filter(v => v.lang === "en-GB").map(v => v.name).join("\n"));
 utterance.voice = voices.find(v => v.lang === "en-GB") || null;
     speechSynthesis.speak(utterance);
 }
