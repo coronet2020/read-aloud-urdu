@@ -122,6 +122,7 @@ function startReading() {
 
     utterance.lang = "en-GB";
     utterance.rate = 0.75;
+    utterance.pitch = 0.9;
 const voices = speechSynthesis.getVoices();
 utterance.voice = voices.find(v => v.lang === "en-GB") || null;
     speechSynthesis.speak(utterance);
